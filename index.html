@@ -88,7 +88,7 @@
 
   </head>
   <body>    
-    version 0.0.4
+    version 0.0.5
     <a-scene>
       <!-- Assets -->
       <a-assets>
@@ -101,6 +101,7 @@
 
       <!-- Interactive Box -->
       <a-box id="box"
+             class="clickable"
              position="0 1.5 -3"
              color="#4CC3D9"
              sound="on: click; src: #ding-sound"
@@ -138,15 +139,16 @@
             position="0 0 0">
           </a-text>
         </a-entity>
-
-        <!-- Gaze cursor -->
-        <a-entity 
-          cursor="fuse: true; fuseTimeout: 1000"
+        
+        <!-- Use the built-in a-cursor with fuse -->
+        <a-cursor 
+          fuse="true" 
+          fuseTimeout="1000"
           raycaster="objects: .clickable"
           position="0 0 -1"
           geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
           material="color: black; shader: flat">
-        </a-entity>
+        </a-cursor>
       </a-entity>
 
     </a-scene>
