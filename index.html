@@ -26,6 +26,30 @@
              animation__rotate="property: rotation; startEvents: click; to: 0 360 0; dur: 1000; easing: easeOutQuad">
       </a-box>
 
+      <!-- Black Rounded Rectangle with White Text -->
+<a-entity position="0 2.5 -3" look-at="[camera]">
+  <!-- Background panel -->
+  <a-plane 
+    width="2.5" 
+    height="0.8" 
+    color="#000000" 
+    material="shader: flat; opacity: 0.8" 
+    geometry="primitive: plane; width: 2.5; height: 0.8"
+    radius="0.1"
+    position="0 0 0"
+  ></a-plane>
+
+  <!-- Centered white text -->
+  <a-text 
+    value="This is an immersive experience"
+    align="center"
+    color="#FFFFFF"
+    width="2.2"
+    position="0 0 0.01">
+  </a-text>
+</a-entity>
+
+
       <!-- Camera + Gaze Cursor -->
       <a-entity camera look-controls wasd-controls position="0 1.6 0">
         <a-entity 
