@@ -95,7 +95,7 @@
 
   </head>
   <body>    
-    version 0.0.13
+    version 0.0.14
     <a-scene id="scene" stats antialias="true">
       <!-- Assets -->
       <a-assets>
@@ -191,6 +191,23 @@
     box.addEventListener('animationcomplete__rotate', () => {
       box.setAttribute('rotation', '0 0 0');
     });    
+  });
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const sceneEl = document.querySelector('#scene');
+
+    sceneEl.addEventListener('click', (event) => {
+      // Create a new green plane
+      const greenPlane = document.createElement('a-plane');
+      greenPlane.setAttribute('color', '#00FF00');
+      greenPlane.setAttribute('width', '1');
+      greenPlane.setAttribute('height', '1');
+      greenPlane.setAttribute('position', '0 1 -2'); // Adjust position as needed
+
+      // Add the plane to the scene
+      sceneEl.appendChild(greenPlane);
+    });
   });
 </script>
   </body>
