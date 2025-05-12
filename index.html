@@ -4,30 +4,33 @@
     <meta charset="utf-8">
     <title>A-Frame Gaze Interaction Fixed</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-  </head>
-  <body>
     <script>
   AFRAME.registerComponent('rounded-plane', {
     schema: {
       width: {type: 'number', default: 2.5},
       height: {type: 'number', default: 0.8},
       radius: {type: 'number', default: 0.1},
-      color: {type: 'color', default: '#FFFFFF'}
+      color: {type: 'color', default: '#FFFFFF'},
+      opacity: {type: 'number', default: 0.9}
     },
     init: function () {
       const data = this.data;
       const el = this.el;
 
-      // Create a canvas to draw the rounded rectangle
+      // Create canvas
       const canvas = document.createElement('canvas');
       canvas.width = 512;
       canvas.height = 256;
       const ctx = canvas.getContext('2d');
 
-      // Draw rounded rectangle
-      ctx.fillStyle = data.color;
+      // Calculate corner radius in pixels
+      const r = data.radius * canvas.height;
+
+      // Draw rounded rectangle with opacity
+      const [rVal, gVal, bVal] = this.hexToRgb(data.color);
+      ctx.fillStyle = `rgba(${rVal}, ${gVal}, ${bVal}, ${data.opacity})`;
+
       ctx.beginPath();
-      const r = data.radius * 100;
       ctx.moveTo(r, 0);
       ctx.lineTo(canvas.width - r, 0);
       ctx.quadraticCurveTo(canvas.width, 0, canvas.width, r);
@@ -40,21 +43,30 @@
       ctx.closePath();
       ctx.fill();
 
-      // Create texture from canvas
+      // Create texture
       const texture = new THREE.CanvasTexture(canvas);
-
-      // Create material and geometry
       const material = new THREE.MeshBasicMaterial({map: texture, transparent: true});
       const geometry = new THREE.PlaneGeometry(data.width, data.height);
-
-      // Create mesh and set it to the entity
       const mesh = new THREE.Mesh(geometry, material);
+
       el.setObject3D('mesh', mesh);
+    },
+
+    // Utility: Convert hex to RGB
+    hexToRgb(hex) {
+      const stripped = hex.replace('#', '');
+      const bigint = parseInt(stripped, 16);
+      const r = (bigint >> 16) & 255;
+      const g = (bigint >> 8) & 255;
+      const b = bigint & 255;
+      return [r, g, b];
     }
   });
 </script>
 
-    version 0.0.2
+  </head>
+  <body>    
+    version 0.0.3
     <a-scene>
       <!-- Assets -->
       <a-assets>
@@ -76,7 +88,7 @@
 
       <!-- White Rounded Rectangle with Black Text -->
 <a-entity position="0 2.5 -3" look-at="[camera]">
-  <a-entity rounded-plane="width: 2.5; height: 0.8; radius: 0.1; color: #FFFFFF"></a-entity>
+  <a-entity rounded-plane="width: 2.5; height: 0.8; radius: 0.1; color: #FFFFFF; opacity: 0.9"></a-entity>
 
   <!-- Centered black text -->
   <a-text 
