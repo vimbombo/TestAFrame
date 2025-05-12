@@ -86,9 +86,10 @@
 </script>
 
 
+
   </head>
   <body>    
-    version 0.0.5
+    version 0.0.6
     <a-scene>
       <!-- Assets -->
       <a-assets>
@@ -128,7 +129,7 @@
       <!-- Camera + Gaze Cursor -->
       <a-entity camera look-controls wasd-controls position="0 1.6 0">
         <!-- FPS display in top-left corner of view -->
-        <a-entity position="-0.75 0.4 -1.2">
+        <a-entity position="-0.5 0.4 -1">
           <a-text 
             fps-counter
             value="FPS: ..." 
@@ -161,6 +162,11 @@
         setTimeout(() => {
           box.setAttribute('color', '#4CC3D9'); // reset to original
         }, 1000); // delay in ms
+      });
+
+      // Reset scale when its animation finishes
+      box.addEventListener('animationcomplete__scale', () => {
+        box.setAttribute('scale', '1 1 1');
       });
     </script>
   </body>
