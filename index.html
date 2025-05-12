@@ -63,10 +63,32 @@
     }
   });
 </script>
+<script>
+  AFRAME.registerComponent('fps-counter', {
+    schema: {
+      updateRate: { type: 'number', default: 500 } // ms between updates
+    },
+    init: function () {
+      this.lastUpdate = performance.now();
+      this.frameCount = 0;
+    },
+    tick: function () {
+      const now = performance.now();
+      this.frameCount++;
+      if (now - this.lastUpdate >= this.data.updateRate) {
+        const fps = Math.round((this.frameCount * 1000) / (now - this.lastUpdate));
+        this.el.setAttribute('value', `FPS: ${fps}`);
+        this.frameCount = 0;
+        this.lastUpdate = now;
+      }
+    }
+  });
+</script>
+
 
   </head>
   <body>    
-    version 0.0.3
+    version 0.0.4
     <a-scene>
       <!-- Assets -->
       <a-assets>
@@ -104,14 +126,29 @@
 
       <!-- Camera + Gaze Cursor -->
       <a-entity camera look-controls wasd-controls position="0 1.6 0">
+        <!-- FPS display in top-left corner of view -->
+        <a-entity position="-0.75 0.4 -1.2">
+          <a-text 
+            fps-counter
+            value="FPS: ..." 
+            font="https://cdn.aframe.io/fonts/Roboto-msdf.json"
+            color="#00FF00" 
+            width="1.5" 
+            align="left"
+            position="0 0 0">
+          </a-text>
+        </a-entity>
+
+        <!-- Gaze cursor -->
         <a-entity 
           cursor="fuse: true; fuseTimeout: 1000"
-          raycaster="objects: #box"
+          raycaster="objects: .clickable"
           position="0 0 -1"
           geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
           material="color: black; shader: flat">
         </a-entity>
       </a-entity>
+
     </a-scene>
 
     <script>
