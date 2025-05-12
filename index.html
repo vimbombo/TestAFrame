@@ -89,7 +89,7 @@
 
   </head>
   <body>    
-    version 0.0.6
+    version 0.0.7
     <a-scene>
       <!-- Assets -->
       <a-assets>
@@ -106,8 +106,27 @@
              position="0 1.5 -3"
              color="#4CC3D9"
              sound="on: click; src: #ding-sound"
-             animation__scale="property: scale; startEvents: click; to: 1.2 1.2 1.2; dur: 200; dir: alternate"
-             animation__rotate="property: rotation; startEvents: click; to: 0 360 0; dur: 1000; easing: easeOutQuad">
+
+             <!-- grow on click -->
+            animation__scale="
+              property: scale;
+              from: 1 1 1;
+              to:   1.2 1.2 1.2;
+              dur:  200;
+              startEvents: click;
+              easing: easeOutQuad
+            "
+
+            <!-- spin once on click -->
+            animation__rotate="
+              property: rotation;
+              from: 0 0 0;
+              to:   0 360 0;
+              dur: 1000;
+              startEvents: click;
+              easing: easeOutQuad
+            "
+            >
       </a-box>
 
       <!-- White Rounded Rectangle with Black Text -->
