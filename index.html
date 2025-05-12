@@ -89,7 +89,7 @@
 
   </head>
   <body>    
-    version 0.0.9
+    version 0.0.10
     <a-scene>
       <!-- Assets -->
       <a-assets>
@@ -172,24 +172,26 @@
     </a-scene>
 
     <script>
-      // Handle color change on gaze click
-      const box = document.querySelector('#box');
-      box.addEventListener('click', () => {
-        box.setAttribute('color', '#FFC107'); // highlight color
-        setTimeout(() => {
-          box.setAttribute('color', '#4CC3D9'); // reset to original
-        }, 1000); // delay in ms
-      });
+  // Toggle this to true during development.
+  const DEBUG = true;
 
-      // Reset scale when its animation finishes
-      box.addEventListener('animationcomplete__scale', () => {
-        box.setAttribute('scale', '1 1 1');
-      });
+  window.addEventListener('DOMContentLoaded', () => {
+    const sceneEl = document.querySelector('#scene');
 
-      // Reset rotation when its animation finishes
-      box.addEventListener('animationcomplete__rotate', () => {
-        box.setAttribute('rotation', '0 0 0');
-      });
-    </script>
+    if (DEBUG) {    
+      const statsEl = document.createElement('a-stats');
+      statsEl.setAttribute('id', 'fps-stats');
+      sceneEl.appendChild(statsEl);      
+    }
+
+    const box = document.querySelector('#box');
+    box.addEventListener('animationcomplete__scale', () => {
+      box.setAttribute('scale', '1 1 1');
+    });
+    box.addEventListener('animationcomplete__rotate', () => {
+      box.setAttribute('rotation', '0 0 0');
+    });    
+  });
+</script>
   </body>
 </html>
