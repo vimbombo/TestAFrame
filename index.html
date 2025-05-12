@@ -63,10 +63,39 @@
     }
   });
 </script>
+<script>
+  AFRAME.registerComponent('fps-hud', {
+    init: function () {
+      // Create a text entity
+      this.textEl = document.createElement('a-text');
+      this.textEl.setAttribute('value', 'FPS: –');
+      this.textEl.setAttribute('align', 'left');
+      this.textEl.setAttribute('position', '-0.5 -0.25 -1'); 
+      this.textEl.setAttribute('width', '1');
+      // Attach it to the camera so it moves with the user's head
+      this.el.sceneEl.camera.el.appendChild(this.textEl);
+
+      this.lastTime = performance.now();
+      this.frameCount = 0;
+    },
+    tick: function () {
+      this.frameCount++;
+      const now = performance.now();
+      const delta = now - this.lastTime;
+      if (delta >= 1000) {
+        const fps = Math.round((this.frameCount * 1000) / delta);
+        this.textEl.setAttribute('value', `FPS: ${fps}`);
+        this.frameCount = 0;
+        this.lastTime = now;
+      }
+    }
+  });
+</script>
+
 
   </head>
   <body>    
-    version 0.0.11
+    version 0.0.12
     <a-scene id="scene" stats>
       <!-- Assets -->
       <a-assets>
@@ -145,6 +174,14 @@
     // Only show stats when DEBUG is true
     if (!DEBUG) {
       sceneEl.removeAttribute('stats');
+    }
+
+    // conditionally add the fps-hud on your camera rig
+    const cameraRig = document.querySelector('[camera]');
+    if (DEBUG) {
+      cameraRig.setAttribute('fps-hud', '');
+    } else {
+      cameraRig.removeAttribute('fps-hud');
     }
 
     const box = document.querySelector('#box');
