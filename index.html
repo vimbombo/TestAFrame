@@ -26,28 +26,29 @@
              animation__rotate="property: rotation; startEvents: click; to: 0 360 0; dur: 1000; easing: easeOutQuad">
       </a-box>
 
-      <!-- Black Rounded Rectangle with White Text -->
+      <!-- White Rounded Rectangle with Black Text -->
 <a-entity position="0 2.5 -3" look-at="[camera]">
   <!-- Background panel -->
   <a-plane 
     width="2.5" 
     height="0.8" 
-    color="#000000" 
-    material="shader: flat; opacity: 0.8" 
+    color="#FFFFFF" 
+    material="shader: flat; opacity: 0.9"
     geometry="primitive: plane; width: 2.5; height: 0.8"
-    radius="0.1"
-    position="0 0 0"
-  ></a-plane>
+    position="0 0 0">
+  </a-plane>
 
-  <!-- Centered white text -->
+  <!-- Centered black text -->
   <a-text 
     value="This is an immersive experience"
+    font="https://cdn.aframe.io/fonts/Montserrat-msdf.json"
     align="center"
-    color="#FFFFFF"
+    color="#000000"
     width="2.2"
     position="0 0 0.01">
   </a-text>
 </a-entity>
+
 
 
       <!-- Camera + Gaze Cursor -->
