@@ -100,11 +100,8 @@
       <!-- Assets -->
       <a-assets>
         <audio id="ding-sound" src="https://cdn.aframe.io/basic-guide/audio/backgroundnoise.wav"></audio>
-      </a-assets>
-
-      <!-- Assets: preload your map -->
-      <a-assets>
         <img id="old-map" src="img/mappa.jpg">
+        <a-asset-item id="chiesa-gltf" src="models/chiesa.glb"></a-asset-item>
       </a-assets>
 
       <!-- Hidden map plane -->
@@ -163,7 +160,11 @@
   </a-text>
 </a-entity>
 
-
+<a-entity 
+  gltf-model="#chiesa-gltf" 
+  position="0 0 -4" 
+  scale="0.5 0.5 0.5">
+</a-entity>
 
       <!-- Camera + Gaze Cursor -->
       <a-entity camera look-controls wasd-controls position="0 1.6 0">                
