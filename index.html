@@ -273,6 +273,17 @@
       selected = (selected + 1) % choices.length;
       updateChoices();
     });
+
+    // Scale up chiesa.glb by 10x when clicked
+    const chiesaEntity = document.querySelector('[gltf-model="#chiesa-gltf"]');
+    chiesaEntity.addEventListener('click', () => {
+      const currentScale = chiesaEntity.getAttribute('scale');
+      chiesaEntity.setAttribute('scale', {
+        x: currentScale.x * 10,
+        y: currentScale.y * 10,
+        z: currentScale.z * 10
+      });
+    });
   });
 </script>
 
