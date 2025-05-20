@@ -160,6 +160,14 @@
   </a-text>
 </a-entity>
 
+<!-- White Rounded Panel with Choices -->
+<a-entity id="choice-panel" position="0 2 -3" look-at="[camera]">
+  <a-entity id="panel-bg" rounded-plane="width: 1.2; height: 0.8; radius: 0.15; color: #FFF; opacity: 0.95"></a-entity>
+  <a-text id="choice-0" value="1 Piazza"  align="center" color="#000" position="0 0.22 0.01" width="1" font-weight="bold"></a-text>
+  <a-text id="choice-1" value="2 Castello" align="center" color="#888" position="0 0.04 0.01" width="1"></a-text>
+  <a-text id="choice-2" value="3 Storia"   align="center" color="#888" position="0 -0.14 0.01" width="1"></a-text>
+</a-entity>
+
 <a-entity 
   gltf-model="#chiesa-gltf" 
   position="0 0 -4" 
@@ -236,6 +244,35 @@
           }
           // If mapState >= 2, we ignore further clicks
         });
+
+    // Choice panel logic
+    const choices = [
+      document.getElementById('choice-0'),
+      document.getElementById('choice-1'),
+      document.getElementById('choice-2')
+    ];
+    let selected = 0;
+
+    function updateChoices() {
+      choices.forEach((el, i) => {
+        if (i === selected) {
+          el.setAttribute('color', '#000');
+          el.setAttribute('font-weight', 'bold');
+          el.setAttribute('scale', '1.1 1.1 1');
+        } else {
+          el.setAttribute('color', '#888');
+          el.setAttribute('font-weight', 'normal');
+          el.setAttribute('scale', '1 1 1');
+        }
+      });
+    }
+    updateChoices();
+
+    // Advance selection on click (Cardboard button triggers click)
+    document.querySelector('a-scene').addEventListener('click', () => {
+      selected = (selected + 1) % choices.length;
+      updateChoices();
+    });
   });
 </script>
 
