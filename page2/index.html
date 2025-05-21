@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<script>
+    // Minimal rounded rectangle primitive for panel, renamed to "rounded-plane"
+    AFRAME.registerPrimitive('a-rounded-plane', {
+        defaultComponents: {
+            geometry: {primitive: 'plane'},
+            material: {shader: 'flat'}
+        },
+        mappings: {
+            width: 'geometry.width',
+            height: 'geometry.height',
+            color: 'material.color',
+            opacity: 'material.opacity',
+        },
+        init: function () {
+            // Add rounded corners using CSS border-radius via a canvas texture
+            const el = this.el;
+            const width = parseFloat(el.getAttribute('width')) || 0.6;
+            const height = parseFloat(el.getAttribute('height')) || 1.0;
+            const radius = parseFloat(el.getAttribute('radius')) || 0.1;
+            const color = el.getAttribute('color') || '#fff';
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 1024;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(radius * 512, 0);
+            ctx.lineTo(512 - radius * 512, 0);
+            ctx.quadraticCurveTo(512, 0, 512, radius * 1024);
+            ctx.lineTo(512, 1024 - radius * 1024);
+            ctx.quadraticCurveTo(512, 1024, 512 - radius * 512, 1024);
+            ctx.lineTo(radius * 512, 1024);
+            ctx.quadraticCurveTo(0, 1024, 0, 1024 - radius * 1024);
+            ctx.lineTo(0, radius * 1024);
+            ctx.closePath();
+            ctx.fill();
+            // Set the canvas as the material's map
+            el.setAttribute('material', 'src', canvas);
+        }
+    });
+</script>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>A-Frame Cardboard Menu Example</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+        <style>
+            body { margin: 0; }
+        </style>
+    </head>
+    <body>
+        <a-scene background="color: #ECECEC">
+            <!-- Vertical Panel with Rounded Corners -->
+            <a-entity id="menu-panel" position="0 1.6 -2">
+                <a-rounded 
+                    color="#fff" 
+                    width="0.6" 
+                    height="1.0" 
+                    radius="0.1"
+                    opacity="0.95"
+                ></a-rounded>
+                <!-- Menu Items -->
+                <a-entity id="menu-items">
+                    <a-text id="item-0" value="Storia" align="center" color="#222" position="0 0.25 0" width="0.8"></a-text>
+                    <a-text id="item-1" value="Piazza" align="center" color="#222" position="0 0 0" width="0.8"></a-text>
+                    <a-text id="item-2" value="Castello" align="center" color="#222" position="0 -0.25 0" width="0.8"></a-text>
+                </a-entity>
+            </a-entity>
+            <!-- Camera -->
+            <a-entity camera look-controls wasd-controls position="0 1.6 0"></a-entity>
+        </a-scene>
+        <script>
+            // Helper to highlight selected menu item
+            const menuItems = [
+                document.getElementById('item-0'),
+                document.getElementById('item-1'),
+                document.getElementById('item-2')
+            ];
+            let selected = 0;
+            function updateMenu() {
+                menuItems.forEach((item, idx) => {
+                    item.setAttribute('color', idx === selected ? '#1976d2' : '#222');
+                    item.setAttribute('font-weight', idx === selected ? 'bold' : 'normal');
+                    item.setAttribute('scale', idx === selected ? '1.2 1.2 1' : '1 1 1');
+                });
+            }
+            updateMenu();
+
+            // Listen for Cardboard button (screen tap)
+            window.addEventListener('click', () => {
+                selected = (selected + 1) % menuItems.length;
+                updateMenu();
+            });
+        </script>
+        
+    </body>
+</html>
